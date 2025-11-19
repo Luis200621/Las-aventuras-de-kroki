@@ -1,5 +1,5 @@
 # 🐸 **Las Aventuras de Kroki**
-Videojuego 2D desarrollado en **Python + Pygame** como proyecto académico de la asignatura **Programación Orientada a Objetos**.
+Videojuego 2D desarrollado en **Python + Pygame** como proyecto de la asignatura **Programación Orientada a Objetos**.
 
 ---
 
