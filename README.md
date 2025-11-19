@@ -36,4 +36,4 @@ El objetivo del proyecto fue diseñar un juego simple pero robusto, con una arqu
 
 - **Python 3.10+**  
 - **Pygame 2.0+**  
-- Editor recomendado: **Visual Studio Code**
+- Editor: **Visual Studio Code**
