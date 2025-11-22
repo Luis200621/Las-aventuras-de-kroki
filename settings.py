@@ -1,0 +1,12 @@
+#DIMENCIONES    
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 768
+
+#COLORES (Aun no definidos)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+
+#VELOCIDAD (Aun no definido)
+PLAYER_SPEED = 5
+
