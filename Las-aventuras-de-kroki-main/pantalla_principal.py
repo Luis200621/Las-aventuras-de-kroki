@@ -44,4 +44,3 @@ class Pantalla_Inicio ():
         
         return None
     
-    # PRINT
