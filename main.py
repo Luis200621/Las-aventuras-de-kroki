@@ -11,6 +11,6 @@ while run:
         if event.type == pg.QUIT:
             run = False
 
-    menu.dibujar()  # ← ESTA LÍNEA MANTIENE LA VENTANA ABIERTA
+    menu.dibujar() 
 
 pg.quit()

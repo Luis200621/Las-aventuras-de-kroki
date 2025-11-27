@@ -8,7 +8,7 @@ class Pantalla_Inicio ():
         pg.init()
         self.screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pg.display.set_caption('Las aventuras de Kroki')
-        icono = pg.image.load("Imagenes/Diseño sin título.png").convert_alpha()
+        icono = pg.image.load("Imagenes/favicon.png").convert_alpha()
         pg.display.set_icon(icono)
 
         #Cargar fondo del menú
