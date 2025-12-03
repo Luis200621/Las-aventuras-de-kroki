@@ -33,3 +33,4 @@ while run:
         juego.dibujar()
 
 pg.quit()
+#HOLA
