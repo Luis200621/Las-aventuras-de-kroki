@@ -1,54 +1,70 @@
-import pygame as pg
-from settings import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_SPEED
+import pygame
+import sys
+from settings import SCREEN_WIDTH, SCREEN_HEIGHT
+from Kroki import Kroki
+pygame.init()
 
-class Juego:
-    def __init__(self, screen):
-        self.screen = screen
 
-        # Cargar personaje PNG
-        imagen_original = pg.image.load("Imagenes/Captura de pantalla 2025-11-18 220154(1).png").convert_alpha()
+ANCHO = SCREEN_WIDTH
+ALTO = SCREEN_HEIGHT
 
-        # ====== AJUSTAR TAMAÑO DEL PERSONAJE ======
-        NUEVO_ANCHO = 80
-        NUEVO_ALTO = 80
+VENTANA = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Las Aventuras de Kroki")
 
-        self.kroki = pg.transform.scale(imagen_original, (NUEVO_ANCHO, NUEVO_ALTO))
+try:
+    fondo = pygame.image.load("Imagenes/fondo.jpeg").convert()
+    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
-        # Guardar tamaño nuevo
-        self.ancho = NUEVO_ANCHO
-        self.alto = NUEVO_ALTO
+    personaje = Kroki()
 
-        # Posición inicial
-        self.x = 100
-        self.y = 300
+    piso_img = pygame.image.load("Imagenes/suelo.jpeg").convert_alpha()
+    piso_img = pygame.transform.scale(piso_img, (ANCHO, 60))
 
-        # Velocidad desde settings
-        self.vel = PLAYER_SPEED
+except:
+    fondo = pygame.Surface((ANCHO, ALTO))
+    fondo.fill((120, 180, 255))
 
-    def actualizar(self):
-        teclas = pg.key.get_pressed()
+    personaje = pygame.Surface((80, 80))
+    personaje.fill((0, 200, 0))
 
-        # Movimiento
-        if teclas[pg.K_LEFT]:
-            self.x -= self.vel
-        if teclas[pg.K_RIGHT]:
-            self.x += self.vel
-        if teclas[pg.K_UP]:
-            self.y -= self.vel
-        if teclas[pg.K_DOWN]:
-            self.y += self.vel
+    piso_img = pygame.Surface((ANCHO, 60))
+    piso_img.fill((100, 80, 50))
 
-        # Límites de pantalla
-        if self.x < 0:
-            self.x = 0
-        if self.x + self.ancho > SCREEN_WIDTH:
-            self.x = SCREEN_WIDTH - self.ancho
-        if self.y < 0:
-            self.y = 0
-        if self.y + self.alto > SCREEN_HEIGHT:
-            self.y = SCREEN_HEIGHT - self.alto
+# Escalar personaje
+personaje = pygame.transform.scale(personaje, (80, 80))
 
-    def dibujar(self):
-        self.screen.fill((0, 0, 0))  # fondo negro temporal
-        self.screen.blit(self.kroki, (self.x, self.y))
-        pg.display.update()
+# Posición inicial del personaje
+personaje_x = ANCHO // 2 - 40
+personaje_y = ALTO - 60 - personaje.get_height()
+
+velocidad = 5
+
+clock = pygame.time.Clock()
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    teclas = pygame.key.get_pressed()
+
+    if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
+        personaje_x -= velocidad
+
+    if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
+        personaje_x += velocidad
+
+    # Limites
+    if personaje_x < 0:
+        personaje_x = 0
+    if personaje_x > ANCHO - personaje.get_width():
+        personaje_x = ANCHO - personaje.get_width()
+
+    # Dibujar
+    VENTANA.blit(fondo, (0, 0))
+    VENTANA.blit(piso_img, (0, ALTO - 60))
+    VENTANA.blit(personaje, (personaje_x, personaje_y))
+
+    pygame.display.update()
+    clock.tick(60)
