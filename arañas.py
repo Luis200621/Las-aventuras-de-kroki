@@ -16,7 +16,7 @@ class Aranas (pygame.sprite.Sprite):
         self.probabilidad_critico = 0.20 # 20% de acertar un golpe critico de las arañas
 
         # Graficos
-        self.image = pygame.image.load("Las-aventuras-de-kroki-main/Las-aventuras-de-kroki-main/Imagenes/araña.png").convert_alpha()
+        self.image = pygame.image.load("Imagenes/araña.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (64,64))
 
         # Rectangulo de colision
