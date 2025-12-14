@@ -11,7 +11,7 @@ class Pantalla_Inicio:
         pg.display.set_caption('Las aventuras de Kroki')
 
         # Fondo del menú
-        self.fondo = pg.image.load("Imagenes/Agregar un título (2).png")
+        self.fondo = pg.image.load("Imagenes/Pantalla_de_inicio.png")
         self.fondo = pg.transform.scale(self.fondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
         # Botones

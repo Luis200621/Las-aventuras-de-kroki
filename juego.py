@@ -1,70 +1,78 @@
 import pygame
 import sys
+import os
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 from Kroki import Kroki
-pygame.init()
 
 
-ANCHO = SCREEN_WIDTH
-ALTO = SCREEN_HEIGHT
+class Juego:
+    def __init__(self, ventana):
+        self.VENTANA = ventana
+        self.ANCHO = SCREEN_WIDTH
+        self.ALTO = SCREEN_HEIGHT
+        self.clock = pygame.time.Clock()
 
-VENTANA = pygame.display.set_mode((ANCHO, ALTO))
-pygame.display.set_caption("Las Aventuras de Kroki")
+        self.cargar_recursos()
 
-try:
-    fondo = pygame.image.load("Imagenes/fondo.jpeg").convert()
-    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
+        # ================== SPRITES ==================
+        self.jugadores = pygame.sprite.Group()
 
-    personaje = Kroki()
+        # Kroki aparece sobre el piso
+        x_inicial = self.ANCHO // 2
+        y_inicial = self.ALTO - 60 - 64  # piso - altura kroki
+        self.kroki = Kroki(x_inicial, y_inicial)
 
-    piso_img = pygame.image.load("Imagenes/suelo.jpeg").convert_alpha()
-    piso_img = pygame.transform.scale(piso_img, (ANCHO, 60))
+        self.jugadores.add(self.kroki)
 
-except:
-    fondo = pygame.Surface((ANCHO, ALTO))
-    fondo.fill((120, 180, 255))
+    # ================== RECURSOS ==================
+    def cargar_recursos(self):
+        try:
+            # Ruta base del proyecto (donde está juego.py)
+            base_path = os.path.dirname(os.path.abspath(__file__))
+            img_path = os.path.join(base_path, "Imagenes")
 
-    personaje = pygame.Surface((80, 80))
-    personaje.fill((0, 200, 0))
+            fondo_path = os.path.join(img_path, "fondo.png")
+            suelo_path = os.path.join(img_path, "suelo.png")
 
-    piso_img = pygame.Surface((ANCHO, 60))
-    piso_img.fill((100, 80, 50))
+            self.fondo = pygame.image.load(fondo_path).convert()
+            self.fondo = pygame.transform.scale(self.fondo, (self.ANCHO, self.ALTO))
 
-# Escalar personaje
-personaje = pygame.transform.scale(personaje, (80, 80))
+            self.piso_img = pygame.image.load(suelo_path).convert_alpha()
+            self.piso_img = pygame.transform.scale(self.piso_img, (self.ANCHO, 60))
 
-# Posición inicial del personaje
-personaje_x = ANCHO // 2 - 40
-personaje_y = ALTO - 60 - personaje.get_height()
+            print(" Fondo y suelo cargados correctamente")
 
-velocidad = 5
+        except Exception as e:
+            print(" Error cargando imágenes:", e)
 
-clock = pygame.time.Clock()
+            self.fondo = pygame.Surface((self.ANCHO, self.ALTO))
+            self.fondo.fill((120, 180, 255))
 
-while True:
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            self.piso_img = pygame.Surface((self.ANCHO, 60))
+            self.piso_img.fill((100, 80, 50))
+    # ================== EVENTOS ==================
+    def eventos(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-    teclas = pygame.key.get_pressed()
+    # ================== UPDATE ==================
+    
+    def actualizar(self):
+        self.jugadores.update()
 
-    if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
-        personaje_x -= velocidad
+    # ================== DIBUJO ==================
+    def dibujar(self):
+        self.VENTANA.blit(self.fondo, (0, 0))
+        self.VENTANA.blit(self.piso_img, (0, self.ALTO - 60))
+        self.jugadores.draw(self.VENTANA)
+        pygame.display.update()
 
-    if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
-        personaje_x += velocidad
-
-    # Limites
-    if personaje_x < 0:
-        personaje_x = 0
-    if personaje_x > ANCHO - personaje.get_width():
-        personaje_x = ANCHO - personaje.get_width()
-
-    # Dibujar
-    VENTANA.blit(fondo, (0, 0))
-    VENTANA.blit(piso_img, (0, ALTO - 60))
-    VENTANA.blit(personaje, (personaje_x, personaje_y))
-
-    pygame.display.update()
-    clock.tick(60)
+    # ================== LOOP ==================
+    def run(self):
+        while True:
+            self.eventos()
+            self.actualizar()
+            self.dibujar()
+            self.clock.tick(60)
